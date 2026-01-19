@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SayePay - Enterprise Payment Infrastructure for Africa</title>
+    <meta name="description" content="Fraud-proof payroll and audit-ready disbursements for governments and enterprises. Payment infrastructure that survives scrutiny.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0A0A0C;
+            --bg-card: #111114;
+            --bg-elevated: #18181C;
+            --border: rgba(255,255,255,0.06);
+            --border-light: rgba(255,255,255,0.1);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255,255,255,0.65);
+            --text-muted: rgba(255,255,255,0.4);
+            --accent-blue: #3B82F6;
+            --accent-cyan: #06B6D4;
+            --accent-green: #10B981;
+            --accent-gold: #F59E0B;
+            --gradient-1: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
+            --gradient-subtle: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(10, 10, 12, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-btn {
+            background: var(--text-primary);
+            color: var(--bg-dark);
+            padding: 0.6rem 1.25rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 3rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-cyan);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-label svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            max-width: 850px;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h1 .text-cyan {
+            color: var(--accent-cyan);
+        }
+
+        /* Rotating text animation */
+        .rotating-text-container {
+            display: inline-block;
+            position: relative;
+            vertical-align: baseline;
+        }
+
+        .rotating-text-container .placeholder {
+            visibility: hidden;
+            display: inline;
+        }
+
+        .rotating-text {
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: inline;
+        }
+
+        .rotating-text .word {
+            opacity: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+            white-space: nowrap;
+            animation: rotateWord 12s infinite;
+        }
+
+        .rotating-text .word:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .rotating-text .word:nth-child(2) {
+            animation-delay: 4s;
+        }
+
+        .rotating-text .word:nth-child(3) {
+            animation-delay: 8s;
+        }
+
+        @keyframes rotateWord {
+            0%, 2% { opacity: 0; transform: translateY(20px); }
+            5%, 30% { opacity: 1; transform: translateY(0); }
+            33%, 100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-tagline {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.25s both;
+        }
+
+        /* Persona Selector */
+        .persona-selector {
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .persona-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+        }
+
+        .persona-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            max-width: 800px;
+        }
+
+        .persona-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .persona-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-4px);
+            background: var(--bg-elevated);
+        }
+
+        .persona-card .icon {
+            font-size: 1.75rem;
+        }
+
+        .persona-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .persona-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .persona-card .arrow {
+            color: var(--accent-cyan);
+            font-size: 0.85rem;
+            margin-top: auto;
+            opacity: 0;
+            transform: translateX(-5px);
+            transition: all 0.2s;
+        }
+
+        .persona-card:hover .arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Trust badges */
+        .trust-bar {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .trust-badge .icon {
+            font-size: 1rem;
+        }
+
+        /* Stats section */
+        .stats {
+            padding: 5rem 3rem;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .stat h3 {
+            font-size: 2.75rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Section headers */
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-label {
+            color: var(--accent-cyan);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 600px;
+        }
+
+        /* Infrastructure section */
+        .infrastructure {
+            padding: 6rem 3rem;
+        }
+
+        .infrastructure-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .infra-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .infra-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .infra-card:hover {
+            border-color: var(--border-light);
+        }
+
+        .infra-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .infra-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .infra-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 3rem;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+        }
+
+        .cta-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 1.05rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.9rem 1.75rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-elevated);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-copy {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-inner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .infra-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .persona-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-right {
+                gap: 1rem;
+            }
+
+            .nav-link {
+                display: none;
+            }
+
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .persona-cards {
+                max-width: 100%;
+            }
+
+            .trust-bar {
+                gap: 1rem;
+            }
+
+            .stats {
+                padding: 3rem 1.5rem;
+            }
+
+            .stats-inner {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .stat h3 {
+                font-size: 2rem;
+            }
+
+            .infrastructure-inner {
+                padding: 4rem 1.5rem;
+            }
+
+            .cta {
+                padding: 4rem 1.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+
+    <nav>
+        <a href="/" class="logo">Saye<span>Pay</span></a>
+        <div class="nav-right">
+            <a href="#why" class="nav-link">Why SayePay</a>
+            <a href="#contact" class="nav-link">Contact</a>
+            <a href="#contact" class="nav-btn">Request Demo</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Payment Infrastructure for Africa
+            </div>
+            <h1><span class="text-cyan">Payment</span> infrastructure for <span class="rotating-text-container"><span class="placeholder">governments</span><span class="rotating-text"><span class="word gradient-text">governments</span><span class="word gradient-text">businesses</span><span class="word gradient-text">developers</span></span></span> across Africa</h1>
+            <p class="hero-sub">Fraud-proof. Audit-ready. Disbursements that survive scrutiny.</p>
+            <p class="hero-tagline">Receive. Save. Spend. Instantly.</p>
+
+            <div class="persona-selector">
+                <p class="persona-label">I am a...</p>
+                <div class="persona-cards">
+                    <a href="#contact" class="persona-card">
+                        <span class="icon">🏛️</span>
+                        <h3>Government Agency</h3>
+                        <p>Zero ghost workers. Audit-ready disbursements. Payroll that survives scrutiny.</p>
+                        <span class="arrow">Learn more →</span>
+                    </a>
+                    <a href="#contact" class="persona-card">
+                        <span class="icon">🏢</span>
+                        <h3>Enterprise</h3>
+                        <p>Payments that clear correctly, every time. Reconciliation built in.</p>
+                        <span class="arrow">Learn more →</span>
+                    </a>
+                    <a href="#contact" class="persona-card">
+                        <span class="icon">⚡</span>
+                        <h3>Developer</h3>
+                        <p>Ship faster. Reach more users. APIs that just work.</p>
+                        <span class="arrow">Learn more →</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="trust-bar">
+                <div class="trust-badge">
+                    <span class="icon">🛡️</span>
+                    Fraud Prevention Built-In
+                </div>
+                <div class="trust-badge">
+                    <span class="icon">✓</span>
+                    Approval Workflows
+                </div>
+                <div class="trust-badge">
+                    <span class="icon">📋</span>
+                    Compliance-Ready
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stats-inner">
+                <div class="stat">
+                    <h3>0</h3>
+                    <p>Ghost payments</p>
+                </div>
+                <div class="stat">
+                    <h3>100%</h3>
+                    <p>Audit trail coverage</p>
+                </div>
+                <div class="stat">
+                    <h3>Seconds</h3>
+                    <p>Settlement time</p>
+                </div>
+                <div class="stat">
+                    <h3>24/7</h3>
+                    <p>Operations</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="infrastructure" id="why">
+            <div class="infrastructure-inner">
+                <div class="section-header">
+                    <p class="section-label">Why SayePay</p>
+                    <h2>What others don't build</h2>
+                    <p>Payment rails are commodity. We build the controls that make payments trustworthy.</p>
+                </div>
+                <div class="infra-grid">
+                    <div class="infra-card">
+                        <div class="infra-icon">🛡️</div>
+                        <h3>Ghost Worker Detection</h3>
+                        <p>Validate every recipient against official registries before a single payment moves. Flag duplicates, inactive employees, and anomalies automatically.</p>
+                    </div>
+                    <div class="infra-card">
+                        <div class="infra-icon">✓</div>
+                        <h3>Maker-Checker Workflows</h3>
+                        <p>Multi-level approval chains. The person who uploads can't approve. Full separation of duties, enforced by the system.</p>
+                    </div>
+                    <div class="infra-card">
+                        <div class="infra-icon">📋</div>
+                        <h3>Audit Trails</h3>
+                        <p>Every action logged. Every approval timestamped. Every disbursement traceable. Reports that satisfy auditors and oversight bodies.</p>
+                    </div>
+                    <div class="infra-card">
+                        <div class="infra-icon">⚡</div>
+                        <h3>Real-Time Settlement</h3>
+                        <p>Direct integration with national payment switches. Funds arrive in seconds, not days. Status visible at every step.</p>
+                    </div>
+                    <div class="infra-card">
+                        <div class="infra-icon">🔄</div>
+                        <h3>Automatic Reconciliation</h3>
+                        <p>No more spreadsheet matching. System reconciles disbursements against source files. Discrepancies flagged instantly.</p>
+                    </div>
+                    <div class="infra-card">
+                        <div class="infra-icon">📱</div>
+                        <h3>Universal Reach</h3>
+                        <p>Every mobile wallet. Every bank account. Feature phones included. No recipient left behind.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta" id="contact">
+            <div class="cta-inner">
+                <h2>Payments everyone can trust</h2>
+                <p>Stop losing money to fraud and manual errors. Let's talk.</p>
+                <div class="cta-buttons">
+                    <a href="mailto:hello@sayepay.com" class="btn btn-primary">Request Demo</a>
+                    <a href="mailto:hello@sayepay.com" class="btn btn-secondary">Contact Sales</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-logo">SayePay</div>
+            <div class="footer-links">
+                <a href="mailto:hello@sayepay.com">hello@sayepay.com</a>
+            </div>
+            <div class="footer-copy">© 2026 SayePay</div>
+        </div>
+    </footer>
+</body>
+</html>
